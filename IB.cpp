@@ -42,7 +42,7 @@ int main()
             freeSlot.push_back(n);
         }
     }
-    vector<string> backup = freeAvailFunds;
+    vector<int> backup = freeAvailFunds;
     while(true)
     {
         cout << "enter value of items requested:";
