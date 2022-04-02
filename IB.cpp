@@ -7,7 +7,6 @@
 #include <vector>
 #include <algorithm>
 using namespace std;
-
 int main()
 {
     cout << "IndustrialBudget" << endl;
@@ -25,28 +24,29 @@ int main()
     }
     cout << "which slots are fulfilled?(separated by space):";
     std::getline (std::cin,fulfillment);
+    stringstream check1(fulfillment);
+    string intermediate;
+    while(getline(check1, intermediate, ' '))
+    {
+        tokens.push_back(stoi(intermediate));
+    }
+    sort(tokens.begin(), tokens.end());
+    vector<int> freeAvailFunds,freeSlot;
+    for(int n = 0; n < slot.size(); n++)
+    {
+        std::vector<int>::iterator it;
+        it = find (tokens.begin(), tokens.end(), n);
+        if (it == tokens.end())
+        {
+            freeAvailFunds.push_back(slot[n]);
+            freeSlot.push_back(n);
+        }
+    }
     while(true)
     {
         cout << "enter value of items requested:";
         std::getline (std::cin,itemsValueS);
         itemsValue = stoi(itemsValueS);
-        stringstream check1(fulfillment);
-        string intermediate;
-        while(getline(check1, intermediate, ' '))
-        {
-            tokens.push_back(stoi(intermediate));
-        }
-        vector<int> freeAvailFunds,freeSlot;
-        for(int n = 0; n < slot.size(); n++)
-        {
-            std::vector<int>::iterator it;
-            it = find (tokens.begin(), tokens.end(), n);
-            if (it == tokens.end())
-            {
-                freeAvailFunds.push_back(slot[n]);
-                freeSlot.push_back(n);
-            }
-        }
         vector<int> slotsTaken;
         for(int f = 0; f < freeAvailFunds.size(); f++)
         {
@@ -68,17 +68,6 @@ int main()
                     cout << slotsTaken[h] << " ";
                 }
                 cout << endl;
-                cout << "Update Slots? [y/n]:";
-                string update;
-                std::getline (std::cin,update);
-                if(update == "Y" || update == "y")
-                {
-                    for(int h = 0; h < slotsTaken.size(); h++)
-                    {
-                        fulfillment += slotsTaken[h] + " ";
-                    }
-                    break;
-                }
                 break;
             }
         }
