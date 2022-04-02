@@ -42,6 +42,7 @@ int main()
             freeSlot.push_back(n);
         }
     }
+    vector<string> backup = freeAvailFunds;
     while(true)
     {
         cout << "enter value of items requested:";
@@ -74,6 +75,7 @@ int main()
         if(itemsValue > 0)
         {
             cout << "not enough funds" << endl;
+            freeAvailFunds = backup;
         }
     }
     return 0;
