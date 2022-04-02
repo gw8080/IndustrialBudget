@@ -11,90 +11,80 @@ using namespace std;
 int main()
 {
     cout << "IndustrialBudget" << endl;
-    string slotCount,slotValue,fulfillmentA,fulfillmentB,fulfillmentC,itemsValue;
-    vector<int> tokensA,tokensB,tokensC;
-    cout << "Enter slot amount per month: ";
+    string slotCount,slotValue,fulfillment, itemsValueS;
+    vector<int> tokens;
+    int itemsValue = 0;
+    cout << "Enter slot amount: ";
     std::getline (std::cin,slotCount);
     vector<int> slot;
-    for(int n = 1; n < 4; n++)
+    for(int i = 0; i < (stoi(slotCount)); i++)
     {
-        for(int i = 1; i < (stoi(slotCount)+1); i++)
+        cout << "Enter total slot value for slot " << i << ":";
+        std::getline (std::cin,slotValue);
+        slot.push_back(stoi(slotValue));
+    }
+    cout << "which slots are fulfilled?(separated by space):";
+    std::getline (std::cin,fulfillment);
+    while(true)
+    {
+        cout << "enter value of items requested:";
+        std::getline (std::cin,itemsValueS);
+        itemsValue = stoi(itemsValueS);
+        stringstream check1(fulfillment);
+        string intermediate;
+        while(getline(check1, intermediate, ' '))
         {
-            cout << "Enter total slot value for slot " << i << " @ month " << n << ":";
-            std::getline (std::cin,slotValue);
-            slot.push_back(stoi(slotValue));
+            tokens.push_back(stoi(intermediate));
         }
-    }
-    cout << "which slots are fulfilled this month?(separated by space):";
-    std::getline (std::cin,fulfillmentA);
-    cout << "which slots are fulfilled next month?(separated by space):";
-    std::getline (std::cin,fulfillmentB);
-    cout << "which slots are fulfilled in the 3rd month?(separated by space):";
-    std::getline (std::cin,fulfillmentC);
-    cout << "enter value of items requested:";
-    std::getline (std::cin,itemsValue);
-    stringstream check1(fulfillmentA);
-    string intermediate;
-    while(getline(check1, intermediate, ' '))
-    {
-        tokensA.push_back(stoi(intermediate));
-    }
-    stringstream check2(fulfillmentB);
-    intermediate = "";
-    while(getline(check2, intermediate, ' '))
-    {
-        tokensB.push_back(stoi(intermediate));
-    }
-    stringstream check3(fulfillmentC);
-    intermediate = "";
-    while(getline(check3, intermediate, ' '))
-    {
-        tokensC.push_back(stoi(intermediate));
-    }
-    vector<int> freeAvailFunds,freeSlot;
-    for(int n = 0; n < slot.size(); n++)
-    {
-        std::vector<int>::iterator it;
-        it = find (tokensA.begin(), tokensA.end(), n);
-        if (it == tokensA.end())
+        vector<int> freeAvailFunds,freeSlot;
+        for(int n = 0; n < slot.size(); n++)
         {
-            freeAvailFunds.push_back(slot[n]);
-            freeSlot.push_back(n);
+            std::vector<int>::iterator it;
+            it = find (tokens.begin(), tokens.end(), n);
+            if (it == tokens.end())
+            {
+                freeAvailFunds.push_back(slot[n]);
+                freeSlot.push_back(n);
+            }
         }
-        it = find (tokensB.begin(), tokensB.end(), n);
-        if (it == tokensB.end())
+        vector<int> slotsTaken;
+        for(int f = 0; f < freeAvailFunds.size(); f++)
         {
-            freeAvailFunds.push_back(slot[n]);
-            freeSlot.push_back(n);
-        }
-        it = find (tokensC.begin(), tokensC.end(), n);
-        if (it == tokensC.end())
-        {
-            freeAvailFunds.push_back(slot[n]);
-            freeSlot.push_back(n);
-        }
-    }
-    vector<int> slotsTaken;
-    for(int f = 0; f < freeSlot; f++)
-    {
-        while(freeSlot[f] > 0)
-        {
-            itemsValue--;
-            freeSlot[f]--;
+            while(freeAvailFunds[f] > 0)
+            {
+                itemsValue--;
+                freeAvailFunds[f]--;
+                if(itemsValue == 0 || freeAvailFunds[f] == 0)
+                {
+                    slotsTaken.push_back(freeSlot[f]);
+                    break;
+                }
+            }
             if(itemsValue == 0)
             {
+                cout << "the new purchase will require slot(s) ";
+                for(int h = 0; h < slotsTaken.size(); h++)
+                {
+                    cout << slotsTaken[h] << " ";
+                }
+                cout << endl;
+                cout << "Update Slots? [y/n]:";
+                string update;
+                std::getline (std::cin,update);
+                if(update == "Y" || update == "y")
+                {
+                    for(int h = 0; h < slotsTaken.size(); h++)
+                    {
+                        fulfillment += slotsTaken[h] + " ";
+                    }
+                    break;
+                }
                 break;
             }
         }
-        slotsTaken.push_back(f);
-        if(itemsValue == 0)
+        if(itemsValue > 0)
         {
-            cout << "the new purchase will require slots ";
-            for(int h = 0; h < slotsTaken; h++)
-            {
-                cout << slotsTaken[h] << " ";
-            }
-            break;
+            cout << "not enough funds" << endl;
         }
     }
     return 0;
