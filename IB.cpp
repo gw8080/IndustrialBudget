@@ -23,7 +23,7 @@ int main()
         std::getline (std::cin,slotValue);
         slot.push_back(stoi(slotValue));
     }
-    cout << "which slots are fulfilled?(separated by space):";
+    cout << "Which slots are fulfilled?(separated by space):";
     std::getline (std::cin,fulfillment);
     stringstream check1(fulfillment);
     string intermediate;
@@ -46,8 +46,7 @@ int main()
     vector<int> backup = freeAvailFunds;
     while(true)
     {
-        cout << "Total remaining:" << std::accumulate(freeAvailFunds.begin(), freeAvailFunds.end(), 0) << endl;
-        cout << "enter value of items requested:";
+        cout << "Enter value of items requested:";
         std::getline (std::cin,itemsValueS);
         itemsValue = stoi(itemsValueS);
         vector<int> slotsTaken;
@@ -65,7 +64,7 @@ int main()
             }
             if(itemsValue == 0)
             {
-                cout << "the new purchase will require slot(s) ";
+                cout << "The new purchase will require slot(s) ";
                 for(int h = 0; h < slotsTaken.size(); h++)
                 {
                     cout << slotsTaken[h] << " ";
@@ -76,7 +75,7 @@ int main()
         }
         if(itemsValue > 0)
         {
-            cout << "not enough funds" << endl;
+            cout << "Not enough funds, Resetting" << endl;
             freeAvailFunds = backup;
         }
     }
