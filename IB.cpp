@@ -6,6 +6,7 @@
 #include <time.h>
 #include <vector>
 #include <algorithm>
+#include <numeric>
 using namespace std;
 int main()
 {
@@ -45,6 +46,7 @@ int main()
     vector<int> backup = freeAvailFunds;
     while(true)
     {
+        cout << "Total remaining:" << std::accumulate(freeAvailFunds.begin(), freeAvailFunds.end(), 0) << endl;
         cout << "enter value of items requested:";
         std::getline (std::cin,itemsValueS);
         itemsValue = stoi(itemsValueS);
